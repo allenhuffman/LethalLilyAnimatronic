@@ -1,5 +1,7 @@
 # LethalLilyAnimatronic
-Arduino code to talk to the Lethal Lily Swamp Witch animatronic head servos.
+Arduino code to talk to the Lethal Lily Swamp Witch animatronic head servos. This Halloween prop was sold in 2023 by Home Depot. Here is a demo on YouTube from Frightman Frights:
+
+https://www.youtube.com/watch?v=NfH5UD395NY
 
 # Lethal Lily Information
 * Home Depot press release from 2023: https://corporate.homedepot.com/news/products/innovation-quality-and-value-introducing-home-depots-2023-halloween-product-lineup
