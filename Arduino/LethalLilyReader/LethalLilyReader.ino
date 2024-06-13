@@ -72,6 +72,7 @@ SoftwareSerial mySerial(GREEN_WIRE_PIN, 3); // RX, TX
 // Globals
 /*--------------------------------------------------------------------------*/
 volatile unsigned int g_pulseCount = 0;
+volatile unsigned long g_pulseTime[200] = { 0 };
 
 /*--------------------------------------------------------------------------*/
 // Setup
@@ -85,7 +86,8 @@ void setup() {
     mySerial.begin(BAUD_RATE);
 
     pinMode(BLUE_WIRE_PIN, INPUT);
-    attachInterrupt(digitalPinToInterrupt(BLUE_WIRE_PIN), countPulse, RISING);
+    //attachInterrupt(digitalPinToInterrupt(BLUE_WIRE_PIN), countPulseISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(BLUE_WIRE_PIN), countPulseISR, CHANGE);
 
     for (int idx=0; idx<10; idx++) Serial.println();
     Serial.println("LethalLillySerial - "__DATE__" "__TIME__);
@@ -145,6 +147,9 @@ void loop()
                     Serial.println (g_pulseCount);
 
                     isPlaying = false;
+
+                    // Calculate pulse durations.
+                    calculatePulseDurations ();
                 }
             }
             else
@@ -161,11 +166,56 @@ void loop()
     } // end of while (mySerial.available())
 } // end of loop()
 
+
 /*--------------------------------------------------------------------------*/
-// Pulse counter.
+// Calculate duration of each pulse.
 /*--------------------------------------------------------------------------*/
-void countPulse() {
-    g_pulseCount++;
+// NOTE: The pulse times do not shut off immediately. There is about a 34ms
+// decay time at the end of each pulse, which makes the Arduino values be
+// much shorter than what the Saleae is seeing. I currently do not know how
+// this impacts the signal seen by the head, but I will do some testing.
+// Adding 37ms to the Arduino calculated "on" time, and subtracting 35ms
+// from the "off" time, makes the values much closer.
+void calculatePulseDurations ()
+{
+    for (int idx=0; idx<g_pulseCount-1; idx++)
+    {
+        unsigned long pulseTime = (g_pulseTime[idx+1] - g_pulseTime[idx]); 
+        
+        //Serial.print ("(");
+        //Serial.print (pulseTime);
+        //Serial.print (")");
+        
+        // Fudge factors to make it match the values that the Saleae
+        // logic analyzer calculates.
+        if (idx & 1) // Off time
+        {
+            pulseTime = pulseTime - 35000; // 35.46206 average
+        }
+        else // On time
+        {
+            pulseTime = pulseTime + 37000; // 37.0141 average
+        }
+        //Serial.print ((float)pulseTime/1000); // millis
+        Serial.print (pulseTime); // micros
+        Serial.print (",");
+    }
+    Serial.println ();
+}
+
+
+/*--------------------------------------------------------------------------*/
+// Pulse counter ISR.
+/*--------------------------------------------------------------------------*/
+void countPulseISR()
+{
+    // Store micros time when the pulse changed.
+    if (g_pulseCount < (sizeof(g_pulseTime)/sizeof(g_pulseTime[0])))
+    {
+        g_pulseTime[g_pulseCount] = micros();
+
+        g_pulseCount++;
+    }
 }
 
 // End of LethalLilyReader.ino
