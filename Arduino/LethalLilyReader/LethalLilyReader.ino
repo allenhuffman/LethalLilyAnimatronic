@@ -90,7 +90,7 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(BLUE_WIRE_PIN), countPulseISR, CHANGE);
 
     for (int idx=0; idx<10; idx++) Serial.println();
-    Serial.println("LethalLillySerial - "__DATE__" "__TIME__);
+    Serial.println("LethalLillyReader - "__DATE__" "__TIME__);
 }
 
 /*--------------------------------------------------------------------------*/
