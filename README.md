@@ -55,7 +55,7 @@ When sequence playback begins, the blue wire will begin pulsing. These are the s
 
 ## I/O pins and 5.9V WARNING!!!
 * The green wire serial appears to be 4.4V, so it should be fine reading on an Arduino with 5V input pins.
-* The blue wire pulse output appears to be about 5.4V. This could damage hardware that can only handle 3.3V or 5V I/O. A voltage divider made of two resistors can be used to lower this to safe level for an Arduino to read. For my experiments, I used a 20K Ohm resistor between the blue wire and the Arduino digital input pin, then ran a 16K Ohm resistor from the same input pin over to ground. (ChatGPT suggestion; I will update this with more accurate information once I have tested it.)
+* The blue wire pulse output appears to be about 5.4V. This could damage hardware that can only handle 3.3V or 5V I/O. A voltage divider made of two resistors can be used to lower this to safe level for an Arduino to read. For my experiments, I used a 10K Ohm resistor between the blue wire and the Arduino digital input pin, then ran a 100K Ohm resistor from the same input pin over to ground. (ChatGPT suggestion; I will update this with more accurate information once I have tested it.)
 
 # TO DO
 More to come...
