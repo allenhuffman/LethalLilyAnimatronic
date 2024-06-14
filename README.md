@@ -3,6 +3,10 @@ Arduino code to talk to the Lethal Lily Swamp Witch animatronic head servos. Thi
 
 https://www.youtube.com/watch?v=NfH5UD395NY
 
+Here is my blog series documenting my research and experiments:
+
+https://subethasoftware.com/2024/06/12/hacking-home-depot-lethal-lily-animatronic-props/
+
 # Lethal Lily Information
 * Home Depot press release from 2023: https://corporate.homedepot.com/news/products/innovation-quality-and-value-introducing-home-depots-2023-halloween-product-lineup
 * Unofficial Wiki: https://seasonalvisionslimited.fandom.com/wiki/Lethal_Lily
