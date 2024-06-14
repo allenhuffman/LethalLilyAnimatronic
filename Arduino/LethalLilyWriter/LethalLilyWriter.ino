@@ -21,6 +21,7 @@
  
  VERSION HISTORY:
  2024-06-13 0.00 allenh - Created based on LethalLilyReader.ino
+ 2024-06-14 0.01 allenh - Changed to PIN 13 so onboard LED will blink.
  
  TODO:
  * TODO...
@@ -35,7 +36,7 @@
 /*--------------------------------------------------------------------------*/
 #define BAUD_RATE       550
 #define GREEN_WIRE_PIN  12  // Serial TX to HEAD
-#define BLUE_WIRE_PIN   2   // Pulses OUT to HEAD
+#define BLUE_WIRE_PIN   13   // Pulses OUT to HEAD
 
 /*--------------------------------------------------------------------------*/
 // Includes
@@ -205,16 +206,6 @@ void setup() {
 
     for (int idx=0; idx<10; idx++) Serial.println();
     Serial.println("LethalLillyWriter - "__DATE__" "__TIME__);
-
-    for (unsigned int idx=0; idx<10; idx++)
-    {
-        Serial.print (idx);
-        Serial.print (" -> ");
-        uint8_t newByte = convertValue (idx);
-        Serial.print (newByte, HEX);
-        Serial.print (" - ");
-        Serial.println (newByte, BIN);
-    }
 }
 
 /*--------------------------------------------------------------------------*/
@@ -236,14 +227,19 @@ void loop()
     {
         if (idx & 1)
         {
+            digitalWrite(BLUE_WIRE_PIN, HIGH);
             Serial.print ("On for ");
         }
         else
         {
+            digitalWrite(BLUE_WIRE_PIN, LOW);
             Serial.print ("Off for ");
         }
         Serial.println (g_pattern1[idx]);
-        delayMicroseconds (g_pattern1[idx]);
+        
+        // Large values do not work for delayMicroseconds(), so a custom
+        // function is used to delay using ms, then leftover time in us.
+        customDelayMicroseconds (g_pattern1[idx]);
     }
 
     Serial.println ("Done.");
@@ -271,4 +267,14 @@ uint8_t convertValue (unsigned int value)
 
     return returnByte;
 }
+
+// Created by ChatGPT.
+void customDelayMicroseconds(unsigned long delayTimeMicros) {
+    unsigned long delayTimeMillis = delayTimeMicros / 1000;
+    unsigned long remainingMicros = delayTimeMicros % 1000;
+
+    delay(delayTimeMillis); // This will not delay if delayTimeMillis is 0
+    delayMicroseconds(remainingMicros); // This will handle the remaining microseconds
+}
+
 // End of LethalLilyWriter.ino
