@@ -12,6 +12,14 @@ https://subethasoftware.com/2024/06/12/hacking-home-depot-lethal-lily-animatroni
 * Unofficial Wiki: https://seasonalvisionslimited.fandom.com/wiki/Lethal_Lily
 * Replacement parts (where you can order just the head, control box, power supply, sensor, etc.): https://sviservice.com/collections/2023/products/sv2323794
 
+# Capabilities
+
+Only the mouth of the head can be controlled, while the rest of the animations (eyes, eyelids, neck) are preset patterns. There are seven preset patterns (numbered 1-7) and one stop pattern (number 8). The stop pattern will halt any animation that is playing and reset the head back to a default state.
+
+Patterns are started or stopped by writing out a byte at 550 baud over a wire. While a pattern is playing, the mouth can be controlled by pulsing voltage to another wire. The pulses are ignored when the head is in stop mode.
+
+The patterns (to be documented) play for a certain amount of time, then motion stops. The mouth can still be controlled until the "stop" byte is sent, turning off the head.
+
 # Technical Specs
 ## Power Supply
 The Lethal Lily Control Box uses a 5.9V 3A DC power supply.
@@ -58,5 +66,5 @@ When sequence playback begins, the blue wire will begin pulsing. These are the s
 * The blue wire pulse output appears to be about 5.4V. This could damage hardware that can only handle 3.3V or 5V I/O. A voltage divider made of two resistors can be used to lower this to safe level for an Arduino to read. For my experiments, I used a 10K Ohm resistor between the blue wire and the Arduino digital input pin, then ran a 100K Ohm resistor from the same input pin over to ground. (ChatGPT suggestion; I will update this with more accurate information once I have tested it.)
 
 # TO DO
-More to come...
-  
+* Document all seven animation patterns.
+* Finish Arduino code to talk to a relay board (to toggle the mouth) and an audio player board.
