@@ -59,7 +59,7 @@ The format of the byte is the right four bits as the number (1-7 for sequence st
         // Sequence 7 - E1  1000 0111 (7)
         // End of Seq - 78  0001 1000 (8)
 
-When sequence playback begins, the blue wire will begin pulsing. These are the signals the control the servo. Details TBD.
+When sequence playback begins, the blue wire will begin pulsing. These are the signals the control the mouth.
 
 ## I/O pins and 5.9V WARNING!!!
 * The green wire serial appears to be 4.4V, so it should be fine reading on an Arduino with 5V input pins.
